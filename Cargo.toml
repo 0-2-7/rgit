@@ -44,4 +44,4 @@ yoke = { version = "0.6", features = ["derive"] }
 
 [build-dependencies]
 anyhow = "1.0"
-rsass = "0.25"
+rsass = "0.26"
