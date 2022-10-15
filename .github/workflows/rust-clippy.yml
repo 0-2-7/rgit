@@ -18,6 +18,9 @@ on:
   schedule:
     - cron: '18 18 * * 3'
 
+permissions:  # added using https://github.com/step-security/secure-workflows
+  contents: read
+
 jobs:
   rust-clippy-analyze:
     name: Run rust-clippy analyzing
@@ -27,8 +30,13 @@ jobs:
       security-events: write
       actions: read # only required for a private repository by github/codeql-action/upload-sarif to get the Action run status 
     steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@2e205a28d0e1da00c5f53b161f4067b052c61f34
+        with:
+          egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
+
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8
 
       - name: Install Rust toolchain
         uses: actions-rs/toolchain@88dc2356392166efad76775c878094f4e83ff746 #@v1
@@ -49,7 +57,7 @@ jobs:
         continue-on-error: true
 
       - name: Upload analysis results to GitHub
-        uses: github/codeql-action/upload-sarif@v2
+        uses: github/codeql-action/upload-sarif@807578363a7869ca324a79039e6db9c843e0e100
         with:
           sarif_file: rust-clippy-results.sarif
           wait-for-processing: true
