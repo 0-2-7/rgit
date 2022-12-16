@@ -31,7 +31,7 @@ jobs:
       actions: read # only required for a private repository by github/codeql-action/upload-sarif to get the Action run status 
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@28278524d0a2e042c57b6713ad659f1b2c13c0ac
+        uses: step-security/harden-runner@266a5d6a507c6927766a67b8380f323eacd977a2
         with:
           egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
 
